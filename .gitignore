@@ -1,3 +1,13 @@
+
+
+
+
+# Foundry / local
+anvil.log
+
+# Broadcast history (keep run-latest.json only)
+broadcast/**/run-*.json
+!broadcast/**/run-latest.json
 # Compiler files
 cache/
 out/
@@ -6,6 +16,8 @@ out/
 !/broadcast
 /broadcast/*/31337/
 /broadcast/**/dry-run/
+
+
 
 # Docs
 docs/

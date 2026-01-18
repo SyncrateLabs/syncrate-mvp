@@ -11,11 +11,24 @@ import "../kyc/KYCRegistry.sol";
  * @dev Mint/Burn controlled, KYC-gated on all balance updates (OZ v5 pattern)
  */
 contract TBILLToken is ERC20, AccessControl {
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+    // The canonical issuer address that is allowed to mint TBILL
+    address public issuer;
+
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
     bytes32 public immutable ASSET_ID;
     KYCRegistry public immutable kyc;
+
+    modifier onlyIssuer() {
+        require(msg.sender == issuer, "TBILL: only issuer");
+        _;
+    }
+
+    /// @notice Set the issuer address. Callable only once by admin (deployer).
+    function setIssuer(address _issuer) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(issuer == address(0), "TBILL: issuer already set");
+        issuer = _issuer;
+    }
 
     constructor(address kycRegistry, bytes32 assetId)
         ERC20("Syncrate TBILL", "mTBILL")
@@ -25,7 +38,7 @@ contract TBILLToken is ERC20, AccessControl {
         ASSET_ID = assetId;
     }
 
-    function mint(address to, uint256 amount) external onlyRole(MINTER_ROLE) {
+    function mint(address to, uint256 amount) external onlyIssuer {
         require(kyc.isAllowed(to, ASSET_ID), "TBILL: KYC fail");
         _mint(to, amount);
     }
