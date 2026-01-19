@@ -216,18 +216,6 @@ The MVP validates:
 
 ---
 
-## Attribution
-
-This testnet MVP was developed by **Frexen** as part of an early-stage infrastructure collaboration.
-
-Frexen’s contribution focused on:
-- Smart contract architecture
-- Compliance enforcement
-- Multi-chain deployment
-- Testnet execution and validation
-
----
-
 ## Final Notes
 
 This repository provides a minimal, auditable foundation for Syncrate’s routing model.
